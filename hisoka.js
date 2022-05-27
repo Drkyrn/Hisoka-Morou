@@ -49,7 +49,7 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
         const text = q = args.join(" ")
         const quoted = m.quoted ? m.quoted : m
         const mime = (quoted.msg || quoted).mimetype || ''
-        const isMedia = /image|video|sticker|audio/.test(mime)
+	    const isMedia = /image|video|sticker|audio/.test(mime)
 	
         // Group
         const groupMetadata = m.isGroup ? await hisoka.groupMetadata(m.chat).catch(e => {}) : ''
@@ -91,17 +91,9 @@ module.exports = hisoka = async (hisoka, m, chatUpdate, store) => {
 	    if (setting) {
 		if (!isNumber(setting.status)) setting.status = 0
 		if (!('autobio' in setting)) setting.autobio = false
-		if (!('templateImage' in setting)) setting.templateImage = true
-		if (!('templateVideo' in setting)) setting.templateVideo = false
-		if (!('templateGif' in setting)) setting.templateGif = false
-		if (!('templateMsg' in setting)) setting.templateMsg = false	
 	    } else global.db.data.settings[botNumber] = {
 		status: 0,
 		autobio: false,
-		templateImage: true,
-		templateVideo: false,
-		templateGif: false,
-		templateMsg: false,
 	    }
 	    
         } catch (err) {
@@ -540,11 +532,11 @@ Silahkan @${m.mentionedJid[0].split`@`[0]} untuk ketik terima/tolak`
             }
             break
 	    case 'donasi': case 'sewabot': case 'sewa': case 'buypremium': case 'donate': {
-                hisoka.sendMessage(m.chat, { image: { url: 'https://telegra.ph/file/74fd634010128be37972c.jpg' }, caption: `*Hai Kak ${m.pushName}*\n\n Bot Rental Prices\n⭔ 13k Per Group via E-Walet 1 Month\n⭔ 18k via pulsa 1 Month\n\n Premium Price Bot\n⭔ 8k per User 1 bulan\n\nPayment can be via Paypal/link aja/pulsa\n\nFor more details, you can chat with the owner\nhttps://wa.me/6288292024190 (Owner)\n\nDonate For Me : \n\n⭔ Paypal : https://www.paypal.me/Cakhaho\n⭔ Saweria : https://saweria.co/DikaArdnt` }, { quoted: m })
+                hisoka.sendMessage(m.chat, { image: { url: 'https://telegra.ph/file/74fd634010128be37972c.jpg' }, caption: `*Hai Kak ${m.pushName}*\n\n Bot Rental Prices\n⭔ 13k Per Group via E-Walet 1 Month\n⭔ 18k via pulsa 1 Month\n\n Premium Price Bot\n⭔ 8k per User 1 bulan\n\nPayment can be via Paypal/link aja/pulsa\n\nFor more details, you can chat with the owner\nhttps://wa.me/6282137666456 (Owner)` }, { quoted: m })
             }
             break
             case 'sc': {
-                m.reply('Script : https://github.com/DikaArdnt/Hisoka-Morou\n\n Dont Forget Give Star\n\nDonate : 6281615075793 (Link Aja)\nSaweria : https://saweria.co/DikaArdnt\nPaypal : https://www.paypal.me/Cakhaho\n\n Dont Forget Donate')
+                m.reply('Script : https://github.com/DikaArdnt/Hisoka-Morou\n\n Dont Forget Give Star\n\nDonate : 6282137666456')
             }
             break
             case 'chat': {
@@ -1111,7 +1103,6 @@ break
              break
             case 'linkgroup': case 'linkgc': {
                 if (!m.isGroup) throw mess.group
-                if (!isBotAdmins) throw mess.botAdmin
                 let response = await hisoka.groupInviteCode(m.chat)
                 hisoka.sendText(m.chat, `https://chat.whatsapp.com/${response}\n\nLink Group : ${groupMetadata.subject}`, m, { detectLink: true })
             }
@@ -1252,7 +1243,7 @@ break
                  let teks = `⬣ *LIST GROUP CHAT*\n\nTotal Group : ${anu.length} Group\n\n`
                  for (let i of anu) {
                      let metadata = await hisoka.groupMetadata(i)
-                     teks += `⬡ *Nama :* ${metadata.subject}\n⬡ *Owner :* ${metadata.owner !== undefined ? '@' + metadata.owner.split`@`[0] : 'Tidak diketahui'}\n⬡ *ID :* ${metadata.id}\n⬡ *Dibuat :* ${moment(metadata.creation * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Member :* ${metadata.participants.length}\n\n────────────────────────\n\n`
+                     teks += `⬡ *Nama :* ${metadata.subject}\n⬡ *Owner :* @${metadata.owner.split('@')[0]}\n⬡ *ID :* ${metadata.id}\n⬡ *Dibuat :* ${moment(metadata.creation * 1000).tz('Asia/Jakarta').format('DD/MM/YYYY HH:mm:ss')}\n⬡ *Member :* ${metadata.participants.length}\n\n────────────────────────\n\n`
                  }
                  hisoka.sendTextWithMentions(m.chat, teks, m)
              }
@@ -1281,23 +1272,24 @@ break
             }
             break
             case 'ebinary': {
-            if (!text) throw `Example : ${prefix + command} text`
+            if (!m.quoted.text && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
             let { eBinary } = require('./lib/binary')
-            let eb = await eBinary(text)
+            let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
+            let eb = await eBinary(teks)
             m.reply(eb)
         }
         break
             case 'dbinary': {
-            if (!text) throw `Example : ${prefix + command} text`
+            if (!m.quoted.text && !text) throw `Kirim/reply text dengan caption ${prefix + command}`
             let { dBinary } = require('./lib/binary')
-            let db = await dBinary(text)
+            let teks = text ? text : m.quoted && m.quoted.text ? m.quoted.text : m.text
+            let db = await dBinary(teks)
             m.reply(db)
         }
         break
             case 'emojimix': {
+	        if (!text) throw `Example : ${prefix + command} 😅+🤔`
 		let [emoji1, emoji2] = text.split`+`
-		if (!emoji1) throw `Example : ${prefix + command} 😅+🤔`
-		if (!emoji2) throw `Example : ${prefix + command} 😅+🤔`
 		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(emoji1)}_${encodeURIComponent(emoji2)}`)
 		for (let res of anu.results) {
 		    let encmedia = await hisoka.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
@@ -1305,41 +1297,18 @@ break
 		}
 	    }
 	    break
-	    case 'emojimix2': {
-	    if (!text) throw `Example : ${prefix + command} 😅`
-		let anu = await fetchJson(`https://tenor.googleapis.com/v2/featured?key=AIzaSyAyimkuYQYF_FXVALexPuGQctUWRURdCYQ&contentfilter=high&media_filter=png_transparent&component=proactive&collection=emoji_kitchen_v5&q=${encodeURIComponent(text)}`)
-		for (let res of anu.results) {
-		    let encmedia = await hisoka.sendImageAsSticker(m.chat, res.url, m, { packname: global.packname, author: global.author, categories: res.tags })
-		    await fs.unlinkSync(encmedia)
-		}
-	    }
-	    break
-	       case 'attp': case 'ttp': {
-           if (!text) throw `Example : ${prefix + command} text`
-           await hisoka.sendMedia(m.chat, `https://xteam.xyz/${command}?file&text=${text}`, 'hisoka', 'morou', m, {asSticker: true})
-         }
-         break
-	       case 'smeme': case 'stickmeme': case 'stikmeme': case 'stickermeme': case 'stikermeme': {
-	        let respond = `Kirim/reply image/sticker dengan caption ${prefix + command} text1|text2`
-	        if (!/image/.test(mime)) throw respond
-            if (!text) throw respond
-	        m.reply(mess.wait)
-            atas = text.split('|')[0] ? text.split('|')[0] : '-'
-            bawah = text.split('|')[1] ? text.split('|')[1] : '-'
+	       case 'smeme': {
+	        if (!text) throw `Kirim/reply image/sticker dengan caption ${prefix + command} teks1|teks2`
+	        if (!/image/.test(mime)) throw `Kirim/reply image/sticker dengan caption ${prefix + command} teks1|teks2`
+	        let [teks1, teks2] = text.split`|`
 	        let dwnld = await quoted.download()
 	        let { floNime } = require('./lib/uploader')
 	        let fatGans = await floNime(dwnld)
-	        let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(atas)}/${encodeURIComponent(bawah)}.png?background=${fatGans.result.url}`
+	        let smeme = `https://api.memegen.link/images/custom/${encodeURIComponent(teks1)}/${encodeURIComponent(teks2)}.png?background=${fatGans.result.url}`
 	        let FaTiH = await hisoka.sendImageAsSticker(m.chat, smeme, m, { packname: global.packname, author: global.auhor })
 	        await fs.unlinkSync(FaTiH)
             }
-	       break     
-	        case 'simih': case 'simisimi': {
-            if (!text) throw `Example : ${prefix + command} text`
-            hm = await fetchJson(api('zenz', '/api/simisimi', { text : text }, 'apikey'))
-            m.reply(hm.result.message)
-            }
-            break
+	       break
             case 'toimage': case 'toimg': {
                 if (!quoted) throw 'Reply Image'
                 if (!/webp/.test(mime)) throw `Balas sticker dengan caption *${prefix + command}*`
@@ -2063,11 +2032,20 @@ break
                 m.reply(mess.wait)
                 if (/(?:\/p\/|\/reel\/|\/tv\/)([^\s&]+)/.test(isUrl(text)[0])) {
                     let anu = await fetchJson(api('zenz', '/downloader/instagram2', { url: isUrl(text)[0] }, 'apikey'))
-                    for (let media of anu.data) hisoka.sendFileUrl(m.chat, media, `Download Url Instagram From ${isUrl(text)[0]}`, m)
+                    for (let media of anu.data) hisoka.sendMedia(m.chat, media, '', `Download Url Instagram From ${isUrl(text)[0]}`, m)
                 } else if (/\/stories\/([^\s&]+)/.test(isUrl(text)[0])) {
                     let anu = await fetchJson(api('zenz', '/downloader/instastory', { url: isUrl(text)[0] }, 'apikey'))
-                    hisoka.sendFileUrl(m.chat, anu.media[0].url, `Download Url Instagram From ${isUrl(text)[0]}`, m)
+                    hisoka.sendMedia(m.chat, anu.media[0].url, '', `Download Url Instagram From ${isUrl(text)[0]}`, m)
                 }
+            }
+            break
+		/** Backup misal yg atas ga keluar video **/
+		case 'igeh': case 'instagram2': case 'ig2': case 'igdl2': {
+                if (!text) throw 'Masukkan Query Link!'
+                m.reply(mess.wait)
+                
+                let anu = await fetchJson(api('zenz', '/downloader/instagram2', { url:text }, 'apikey'))
+                hisoka.sendMessage(m.chat, { video: { url: anu.data[0] } }, { quoted: m })
             }
             break
             case 'joox': case 'jooxdl': {
@@ -2567,163 +2545,6 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 hisoka.sendContact(m.chat, global.owner, m)
             }
             break
-            case 'playstore': {
-            if (!text) throw `Example : ${prefix + command} clash of clans`
-            let res = await fetchJson(api('zenz', '/webzone/playstore', { query: text }, 'apikey'))
-            let teks = `⭔ Playstore Search From : ${text}\n\n`
-            for (let i of res.result) {
-            teks += `⭔ Name : ${i.name}\n`
-            teks += `⭔ Link : ${i.link}\n`
-            teks += `⭔ Developer : ${i.developer}\n`
-            teks += `⭔ Link Developer : ${i.link_dev}\n\n──────────────────────\n`
-            }
-            m.reply(teks)
-            }
-            break
-            case 'gsmarena': {
-            if (!text) throw `Example : ${prefix + command} samsung`
-            let res = await fetchJson(api('zenz', '/webzone/gsmarena', { query: text }, 'apikey'))
-            let { judul, rilis, thumb, ukuran, type, storage, display, inchi, pixel, videoPixel, ram, chipset, batrai, merek_batre, detail } = res.result
-let capt = `⭔ Title: ${judul}
-⭔ Realease: ${rilis}
-⭔ Size: ${ukuran}
-⭔ Type: ${type}
-⭔ Storage: ${storage}
-⭔ Display: ${display}
-⭔ Inchi: ${inchi}
-⭔ Pixel: ${pixel}
-⭔ Video Pixel: ${videoPixel}
-⭔ Ram: ${ram}
-⭔ Chipset: ${chipset}
-⭔ Battery: ${batrai}
-⭔ Battery Brand: ${merek_batre}
-⭔ Detail: ${detail}`
-            hisoka.sendImage(m.chat, thumb, capt, m)
-            }
-            break
-            case 'jadwalbioskop': {
-            if (!text) throw `Example: ${prefix + command} jakarta`
-            let res = await fetchJson(api('zenz', '/webzone/jadwalbioskop', { kota: text }, 'apikey'))
-            let capt = `Jadwal Bioskop From : ${text}\n\n`
-            for (let i of res.result){
-            capt += `⭔ Title: ${i.title}\n`
-            capt += `⭔ Thumbnail: ${i.thumb}\n`
-            capt += `⭔ Url: ${i.url}\n\n──────────────────────\n`
-            }
-            hisoka.sendImage(m.chat, res.result[0].thumb, capt, m)
-            }
-            break
-            case 'nowplayingbioskop': {
-            let res = await fetchJson(api('zenz', '/webzone/nowplayingbioskop', {}, 'apikey'))
-            let capt = `Now Playing Bioskop\n\n`
-            for (let i of res.result){
-            capt += `⭔ Title: ${i.title}\n`
-            capt += `⭔ Url: ${i.url}\n`
-            capt += `⭔ Img Url: ${i.img}\n\n──────────────────────\n`
-            }
-            hisoka.sendImage(m.chat, res.result[0].img, capt, m)
-            }
-            break
-            case 'aminio': {
-            if (!text) throw `Example: ${prefix + command} free fire`
-            let res = await fetchJson(api('zenz', '/webzone/amino', { query: text }, 'apikey'))
-            let capt = `Amino Search From : ${text}\n\n`
-            for (let i of res.result){
-            capt += `⭔ Community: ${i.community}\n`
-            capt += `⭔ Community Link: ${i.community_link}\n`
-            capt += `⭔ Thumbnail: ${i.community_thumb}\n`
-            capt += `⭔ Description: ${i.community_desc}\n`
-            capt += `⭔ Member Count: ${i.member_count}\n\n──────────────────────\n`
-            }
-            hisoka.sendImage(m.chat, 'https://'+res.result[0].community_thumb, capt, m)
-            }
-            break
-            case 'wattpad': {
-            if (!text) throw `Example : ${prefix + command} love`
-            let res = await fetchJson(api('zenz', '/webzone/wattpad', { query: text }, 'apikey'))
-            let { judul, dibaca, divote, bab, waktu, url, thumb, description } = res.result[0]
-            let capt = `Wattpad From ${text}\n\n`
-            capt += `⭔ Judul: ${judul}\n`
-            capt += `⭔ Dibaca: ${dibaca}\n`
-            capt += `⭔ Divote: ${divote}\n`
-            capt += `⭔ Bab: ${bab}\n`
-            capt += `⭔ Waktu: ${waktu}\n`
-            capt += `⭔ Url: ${url}\n`
-            capt += `⭔ Deskripsi: ${description}`
-            hisoka.sendImage(m.chat, thumb, capt, m)
-            }
-            break
-            case 'webtoons': {
-            if (!text) throw `Example : ${prefix + command} love`
-            let res = await fetchJson(api('zenz', '/webzone/webtoons', { query: text }, 'apikey'))
-            let capt = `Webtoons Search From : ${text}\n\n`
-            for (let i of res.result) {
-            capt += `⭔ Judul: ${i.judul}\n`
-            capt += `⭔ Like: ${i.like}\n`
-            capt += `⭔ Creator: ${i.creator}\n`
-            capt += `⭔ Genre: ${i.genre}\n`
-            capt += `⭔ Url: ${i.url}\n\n──────────────────────\n`
-            }
-            m.reply(capt)
-            }
-            break
-            case 'drakor': {
-            if (!text) throw `Example : ${prefix + command} love`
-            let res = await fetchJson(api('zenz', '/webzone/drakor', { query: text }, 'apikey'))
-            let capt = `Drakor Search From : ${text}\n\n`
-            for (let i of res.result) {
-            capt += `⭔ Judul: ${i.judul}\n`
-            capt += `⭔ Years: ${i.years}\n`
-            capt += `⭔ Genre: ${i.genre}\n`
-            capt += `⭔ Url: ${i.url}\n`
-            capt += `⭔ Thumbnail Url: ${i.thumbnail}\n\n──────────────────────\n`
-            }
-            hisoka.sendImage(m.chat, res.result[0].thumbnail, capt, m)
-            }
-            break
-            case 'setmenu': {
-            if (!isCreator) throw mess.owner
-            let setbot = db.data.settings[botNumber]
-               if (args[0] === 'templateImage'){
-                setbot.templateImage = true
-                setbot.templateVideo = false
-                setbot.templateGif = false
-                setbot.templateMsg = false
-                m.reply(mess.success)
-                } else if (args[0] === 'templateVideo'){
-                setbot.templateImage = false
-                setbot.templateVideo = true
-                setbot.templateGif = false
-                setbot.templateMsg = false
-                m.reply(mess.success)
-                } else if (args[0] === 'templateGif'){
-                setbot.templateImage = false
-                setbot.templateVideo = false
-                setbot.templateGif = true
-                setbot.templateMsg = false
-                m.reply(mess.success)
-                } else if (args[0] === 'templateMessage'){
-                setbot.templateImage = false
-                setbot.templateVideo = false
-                setbot.templateGif = false
-                setbot.templateMsg = true
-                m.reply(mess.success)
-                } else {
-                let sections = [
-                {
-                title: "CHANGE MENU BOT",
-                rows: [
-                {title: "Template Image", rowId: `setmenu templateImage`, description: `Change menu bot to Template Image`},
-                {title: "Template Video", rowId: `setmenu templateVideo`, description: `Change menu bot to Template Video`},
-                {title: "Template Gif", rowId: `setmenu templateGif`, description: `Change menu bot to Template Gif`},
-                {title: "Template Message", rowId: `setmenu templateMessage`, description: `Change menu bot to Template Message`}
-                ]
-                },
-                ]
-                hisoka.sendListMsg(m.chat, `Please select the menu you want to change!`, hisoka.user.name, `Hello Owner !`, `Click Here`, sections, m)
-                }
-            }
-            break
             case 'list': case 'menu': case 'help': case '?': {
                 anu = `┌──⭓ *Group Menu*
 │
@@ -2749,20 +2570,6 @@ let capt = `⭔ Title: ${judul}
 │⭔ ${prefix}hapusvote
 │
 └───────⭓
-
-┌──⭓ *Webzone Menu*
-│
-│⭔ ${prefix}playstore
-│⭔ ${prefix}gsmarena
-│⭔ ${prefix}jadwalbioskop
-│⭔ ${prefix}nowplayingbioskop
-│⭔ ${prefix}aminio
-│⭔ ${prefix}wattpad
-│⭔ ${prefix}webtoons
-│⭔ ${prefix}drakor
-│
-└───────⭓
-
 
 ┌──⭓ *Downloader Menu*
 │
@@ -2890,7 +2697,6 @@ let capt = `⭔ Title: ${judul}
 
 ┌──⭓ *Fun Menu*
 │
-│⭔ ${prefix}simih
 │⭔ ${prefix}halah
 │⭔ ${prefix}hilih
 │⭔ ${prefix}huluh
@@ -2944,13 +2750,10 @@ let capt = `⭔ Title: ${judul}
 
 ┌──⭓ *Convert Menu*
 │
-│⭔ ${prefix}attp
-│⭔ ${prefix}ttp
 │⭔ ${prefix}toimage
 │⭔ ${prefix}removebg
 │⭔ ${prefix}sticker
 │⭔ ${prefix}emojimix
-│⭔ ${prefix}emojimix2
 │⭔ ${prefix}tovideo
 │⭔ ${prefix}togif
 │⭔ ${prefix}tourl
@@ -2998,6 +2801,7 @@ let capt = `⭔ Title: ${judul}
 │⭔ ${prefix}start
 │⭔ ${prefix}next
 │⭔ ${prefix}keluar
+│⭔ ${prefix}sendkontak
 │
 └───────⭓
 
@@ -3039,7 +2843,6 @@ let capt = `⭔ Title: ${judul}
 │⭔ ${prefix}bcall [text]
 │⭔ ${prefix}setppbot [image]
 │⭔ ${prefix}setexif
-│⭔ ${prefix}setmenu [option]
 │
 └───────⭓`
                 let btn = [{
@@ -3068,16 +2871,7 @@ let capt = `⭔ Title: ${judul}
                                     id: 'sc'
                                 }
                             }]
-                         let setbot = db.data.settings[botNumber]
-                        if (setbot.templateImage) {
                         hisoka.send5ButImg(m.chat, anu, hisoka.user.name, global.thumb, btn)
-                        } else if (setbot.templateGif) {
-                        hisoka.send5ButGif(m.chat, anu, hisoka.user.name, global.visoka, btn)
-                        } else if (setbot.templateVid) {
-                        hisoka.send5ButVid(m.chat, anu, hisoka.user.name, global.visoka, btn)
-                        } else if (setbot.templateMsg) {
-                        hisoka.send5ButMsg(m.chat, anu, hisoka.user.name, btn)
-                        }
                      }
             break
             default:

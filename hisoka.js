@@ -1331,7 +1331,7 @@ break
                 hisoka.sendTextWithMentions(m.chat, teks, m)
             }
             break
-            case 'q': case 'quoted': {
+            case 'quoted': {
 		if (!m.quoted) return m.reply('Reply Pesannya!!')
 		let wokwol = await hisoka.serializeM(await m.getQuotedObj())
 		if (!wokwol.quoted) return m.reply('Pesan Yang anda reply tidak mengandung reply')
@@ -2634,6 +2634,12 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                 m.reply(respon)
             }
             break
+
+case 'jembut': {
+m.reply('Gaboleh toxic!')
+}
+break
+
             case 'speedtest': {
             m.reply('Testing Speed...')
             let cp = require('child_process')

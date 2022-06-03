@@ -581,14 +581,14 @@ case 'apakah':
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} saya wibu`)
 const apa = ['Iya', 'Tidak', 'Bisa Jadi', 'Betul', 'YNTKTS']
 const kah = apa[Math.floor(Math.random() * apa.length)]
-kagura.sendMessage(from, { text: `Pertanyaan : Apakah ${q}\nJawaban : ${kah}` }, { quoted: m })
+hisoka.sendMessage(from, { text: `Pertanyaan : Apakah ${q}\nJawaban : ${kah}` }, { quoted: m })
 
 break
 case 'bisakah':
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} saya wibu`)
 const bisa = ['Bisa','Gak Bisa','Gak Bisa Ajg Awikwok','TENTU PASTI KAMU BISA!!!!']
 const ga = bisa[Math.floor(Math.random() * bisa.length)]
-kagura.sendMessage(from, { text: `Pertanyaan : ${q}\nJawaban : ${ga}` }, { quoted: m })
+hisoka.sendText(from, { text: `Pertanyaan : ${q}\nJawaban : ${ga}` }, { quoted: m })
 
 break
 case 'bagaimanakah':

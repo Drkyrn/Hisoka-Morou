@@ -577,6 +577,13 @@ Silahkan @${m.mentionedJid[0].split`@`[0]} untuk ketik terima/tolak`
             }
             break
 
+case 'simih': case 'simisimi': {
+if (!q) return reply(`Example : ${prefix + command} text`)
+hm = await fetchJson(api('zenz', '/api/simisimi', { text : text }, 'apikey'))
+m.reply(hm.result.message)
+}
+break
+
 case 'apakah':
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} saya wibu`)
 const apa = ['Iya', 'Tidak', 'Bisa Jadi', 'Betul', 'YNTKTS']
@@ -612,7 +619,7 @@ case 'cekganteng':
 if (!q) return reply(`Penggunaan ${command} Nama\n\nContoh : ${command} Riych`)
 const gan = ['5', '10', '15' ,'20', '25','30','35','40','45','50','55','60','65','70','75','80','85','90','100']
 const teng = gan[Math.floor(Math.random() * gan.length)]
-hisoka.sendMessage(from, { text: `Nama : ${q}\nJawaban : *${teng}%*` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Nama : ${q}\nJawaban : *${teng}%*` }, { quoted: m })
 
 break
 case 'cantikcek':

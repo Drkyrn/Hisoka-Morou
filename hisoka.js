@@ -2992,16 +2992,6 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                     }
                 }
 
-if (txt.length > 1500){
-if (!isGroup) return
-if (!isAntiVirtex) return
-if (isGroupAdmins) return reply(`ADMIN😎💪`)
-var kic = `${sender.split("@")[0]}@s.whatsapp.net`
-setTimeout( () => {
-hisoka.groupParticipantsUpdate(from, [kic],"remove")
-}, 0)
-}
-
                 if (budy.startsWith('>')) {
                     if (!isCreator) return m.reply(mess.owner)
                     try {

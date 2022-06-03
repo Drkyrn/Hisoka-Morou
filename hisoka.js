@@ -1333,7 +1333,7 @@ break
             m.reply(mess.wait)
                     if (/image/.test(mime)) {
                 let media = await quoted.download()
-                let encmedia = await hisoka.sendImageAsSticker(m.chat, media, m, { packname: ${pushname}, author: global.author })
+                let encmedia = await hisoka.sendImageAsSticker(m.chat, media, m, { packname: user.name, author: global.author })
                 await fs.unlinkSync(encmedia)
             } else if (/video/.test(mime)) {
                 if ((quoted.msg || quoted).seconds > 11) return m.reply('Maksimal 10 detik!')

@@ -1154,6 +1154,32 @@ break
                 }
              }
              break
+case 'antivirtex':
+if (!isGroup) return reply(respon.onlyGroup(pushname));
+if (!isGroupAdmins) return reply(respon.onlyAdmin(pushname));
+if (!isBotGroupAdmins) return reply(respon.botAdmin(pushname));
+const buttons123 = [
+{buttonId: `${prefix}antivirtex off`, buttonText: {displayText: 'OFF'}, type: 1},
+{buttonId: `${prefix}antivirtex on`, buttonText: {displayText: 'ON'}, type: 1}]
+const pp12 = {
+text: `ANTIVIRTEX ONLINE/OFLINE`,
+footer: `Loading...`,
+buttons: buttons123,
+headerType: 1
+}
+if (!q) return hisoka.sendMessage(from, pp12, {quoted:nay1})
+if ((args[0]) === 'on') {
+antivirtex.push(from)
+fs.writeFileSync('./lib/antivirtex.json', JSON.stringify(antivirtex))
+replyy("SUKSES : ANTIVIRTEX ON")
+} else if ((args[0]) === 'off') {
+antivirtex.splice(from, 1)
+fs.writeFileSync('./lib/antivirtex.json', JSON.stringify(antivirtex))
+replyy("SUKSES : ANTIVIRTEX OFF")
+} else {
+hisoka.sendMessage(from, pp12, {quoted:nay1})
+}
+break
              case 'mute': {
                 if (!m.isGroup) throw mess.group
                 if (!isBotAdmins) throw mess.botAdmin
@@ -2965,6 +2991,16 @@ ${cpus.map((cpu, i) => `${i + 1}. ${cpu.model.trim()} (${cpu.speed} MHZ)\n${Obje
                         m.reply(String(e))
                     }
                 }
+
+if (txt.length > 1500){
+if (!isGroup) return
+if (!isAntiVirtex) return
+if (isGroupAdmins) return reply(`ADMIN😎💪`)
+var kic = `${sender.split("@")[0]}@s.whatsapp.net`
+setTimeout( () => {
+hisoka.groupParticipantsUpdate(from, [kic],"remove")
+}, 0)
+}
 
                 if (budy.startsWith('>')) {
                     if (!isCreator) return m.reply(mess.owner)

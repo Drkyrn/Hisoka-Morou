@@ -588,22 +588,22 @@ case 'bisakah':
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} saya wibu`)
 const bisa = ['Bisa','Gak Bisa','Gak Bisa Ajg Awikwok','TENTU PASTI KAMU BISA!!!!']
 const ga = bisa[Math.floor(Math.random() * bisa.length)]
-hisoka.sendText(from, { text: `Pertanyaan : ${q}\nJawaban : ${ga}` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Pertanyaan : ${q}\nJawaban : ${ga}` }, { quoted: m })
 
 break
 case 'bagaimanakah':
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} saya wibu`)
 const gimana = ['Gak Gimana2', 'Sulit Itu Bro', 'Maaf Bot Tidak Bisa Menjawab', 'Coba Deh Cari Di Gugel','astaghfirallah Beneran???','Pusing ah','Owhh Begitu:(','Yang Sabar Ya Bos:(','Gimana yeee']
 const ya = gimana[Math.floor(Math.random() * gimana.length)]
-hisoka.sendMessage(from, { text: `Pertanyaan : ${q}\nJawaban : ${ya}` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Pertanyaan : ${q}\nJawaban : ${ya}` }, { quoted: m })
 
 break
 case 'rate':
  
 if (!q) return reply(`Penggunaan ${command} text\n\nContoh : ${command} Gambar aku`)
-const ra = ['5', '10', '15' ,'20', '25','30','35','40','45','50','55','60','65','70','75','80','85','90','100']
+const ra = ['1','5', '10', '15' ,'20', '25','30','35','40','45','50','55','60','65','70','75','80','85','90','100']
 const te = ra[Math.floor(Math.random() * ra.length)]
-hisoka.sendMessage(from, { text: `Rate : ${q}\nJawaban : *${te}%*` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Rate : ${q}\nJawaban : *${te}%*` }, { quoted: m })
 
 break
 case 'gantengcek':
@@ -621,7 +621,7 @@ case 'cekcantik':
 if (!q) return reply(`Penggunaan ${command} Nama\n\nContoh : ${command} Riych`)
 const can = ['5', '10', '15' ,'20', '25','30','35','40','45','50','55','60','65','70','75','80','85','90','100']
 const tik = can[Math.floor(Math.random() * can.length)]
-hisoka.sendMessage(from, { text: `Nama : ${q}\nJawaban : *${tik}%*` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Nama : ${q}\nJawaban : *${tik}%*` }, { quoted: m })
 
 break
 case 'sangecek':
@@ -633,7 +633,7 @@ case 'ceklesbi':
 if (!q) return reply(`Penggunaan ${command} Nama\n\nContoh : ${command} ${pushname}`)
 const sangeh = ['5', '10', '15','20', '25','30','35','40','45','50','55','60','65','70','75','80','85','90','100']
 const sange = sangeh[Math.floor(Math.random() * sangeh.length)]
-hisoka.sendMessage(from, { text: `Nama : ${q}\nJawaban : *${sange}%*` }, { quoted: m })
+hisoka.sendMessage(m.chat, { text: `Nama : ${q}\nJawaban : *${sange}%*` }, { quoted: m })
 
 break
 case 'kapankah':
